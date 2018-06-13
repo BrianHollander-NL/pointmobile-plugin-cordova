@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="cordova-plugin-pm66plugin" version="0.0.1">
+    <name>PM66 Plugin</name>
+
+    <description>An Android Cordova plugin that implements features of the PM66 Android device.</description>
+    <license>MIT</license>
+
+    <keywords>cordova,android,pm66</keywords>
+    <repo>https://github.com/timeseriesBH/pm66-plugin.git</repo>
+    <issue>https://github.com/timeseriesBH/pm66-plugin/issues</issue>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0"/>
+    </engines>
+
+    <js-module src="www/pm66plugin.js" name="pm66plugin">
+        <clobbers target="window.plugins.pm66Plugin" />
+    </js-module>
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="PM66Plugin">
+                <param name="android-package" value="nl.valuga.pm66plugin"/>
+            </feature>
+        </config-file>
+
+       <!-- <source-file src="src/android/ToastyPlugin.java" target-dir="src/com/stanleyidesis/cordova/plugin" />-->
+    </platform>
+</plugin>

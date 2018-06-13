@@ -1,0 +1,32 @@
+{
+  "name": "cordova-plugin-pm66plugin",
+  "version": "0.0.1",
+  "description": "An Android Cordova plugin that implements features of the PM66 Android device..",
+  "cordova": {
+    "id": "cordova-plugin-pm66",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timeseriesBH/pm66-plugin.git"
+  },
+  "keywords": [
+    "PM66",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "Stanley Idesis <stan.idesis@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stanidesis/toastyplugin/issues"
+  },
+  "homepage": "https://github.com/stanidesis/toastyplugin/"
+}
