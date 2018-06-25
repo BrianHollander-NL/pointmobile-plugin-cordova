@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="device.sdk">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/android/device.sdk.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
