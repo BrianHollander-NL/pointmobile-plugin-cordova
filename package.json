@@ -1,16 +1,16 @@
 {
-  "name": "cordova-plugin-pm66plugin",
+  "name": "cordova-plugin-pointmobileplugin",
   "version": "0.0.1",
-  "description": "An Android Cordova plugin that implements features of the PM66 Android device..",
+  "description": "An Android Cordova plugin that implements features of the Point Mobile Android device..",
   "cordova": {
-    "id": "cordova-plugin-pm66",
+    "id": "plugin-pointmobile-cordova",
     "platforms": [
       "android"
     ]
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/timeseriesBH/pm66-plugin.git"
+    "url": "git+https://github.com/timeseriesBH/pointmobile-plugin.git"
   },
   "keywords": [
     "PM66",
@@ -23,10 +23,10 @@
       "version": ">=3.0.0"
     }
   ],
-  "author": "Stanley Idesis <stan.idesis@gmail.com>",
+  "author": "Brian Hollander <brian.hollander@valuga.nl>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/stanidesis/toastyplugin/issues"
+    "url": "https://github.com/timeseriesBH/pointmobile-plugin/issues"
   },
-  "homepage": "https://github.com/stanidesis/toastyplugin/"
+  "homepage": "https://github.com/timeseriesBH/pointmobile-plugin/"
 }
