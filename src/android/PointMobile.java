@@ -4,7 +4,7 @@ import org.apache.cordova.*;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.Cordova;
+import org.apache.cordova.CordovaWebView;
 import org.json.*;
 
 import java.lang.*;
