@@ -1,47 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="nl.valuga.plugin.pointmobile"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="cordova-plugin-pointmobile" version="0.0.1">
-    <name>Point Mobile Plugin</name>
+    version="0.1.0">
 
-    <description>An Android Cordova plugin that implements features of the PM Android device.</description>
-    <license>MIT</license>
+<name>PointMobile</name>
 
-    <keywords>cordova,android,pointmobile</keywords>
-    <repo>https://github.com/timeseriesBH/pointmobile-plugin-cordova.git</repo>
-    <issue>https://github.com/timeseriesBH/pointmobile-plugin-cordova/issues</issue>
+<!-- cordova -->
+<engines>
+    <engine name="cordova" version=">=3.5.0"/>
+</engines>
 
-    <engines>
-        <engine name="cordova" version=">=3.0.0"/>
-    </engines>
+<!-- dependencies -->
+<dependency id="cordova-plugin-device" />
 
-    <js-module src="www/pointmobileplugin.js" name="pointmobileplugin">
-        <clobbers target="window.plugins.pointmobile" />
-    </js-module>
-    <platform name="android">
-        <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="PointMobilePlugin">
-                <param name="android-package" value="nl.valuga.pointmobileplugin"/>
-            </feature>
-        </config-file>
-        <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <uses-permission android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"/>
-            <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
-            <permission
-                android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
-                android:protectionLevel="normal" />
-        </config-file>gradle
-        <receiver
-            android:name="nl.valuga.pointmobileplugin$ScanResultReceiver"
-            android:enabled="true"
-            android:permission="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
-            android:priority="0" >
-            <intent-filter>
-                <action android:name="device.common.USERMSG" />
-            </intent-filter>
-        </receiver>
-        <uses-library android:name="device.sdk" android:required="true" />
-        <source-file src="src/android/device.sdk.jar" target-dir="libs" framework="true" />
-        <source-file src="src/android/PointMobile.java" target-dir="src/nl/valuga/plugin/PointMobile/"/>
-    </platform>
+<!-- js -->
+<js-module src="www/pointmobile.js" name="pm80">
+    <clobbers target="cordova.plugins.PointMobile" />
+</js-module>
+
+<platform name="android">
+    <!-- android -->
+    <config-file target="res/xml/config.xml" parent="/*">
+        <feature name="PointMobile">
+            <param name="android-package" value="nl.valuga.plugin.pointmobile.PointMobile"/>
+        </feature>
+    </config-file>
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+        <uses-permission android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"/>
+        <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+        <permission
+            android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
+            android:protectionLevel="normal" />
+    </config-file>
+    <receiver
+        android:name="nl.valuga.plugin.pointmobile.PointMobile$ScanResultReceiver"
+        android:enabled="true"
+        android:permission="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
+        android:priority="0" >
+        <intent-filter>
+            <action android:name="device.common.USERMSG" />
+        </intent-filter>
+    </receiver>
+
+    <uses-library android:name="device.sdk" android:required="true" />
+    <source-file src="src/android/device.sdk.jar" target-dir="libs" framework="true" />
+    <source-file src="src/android/PointMobile.java" target-dir="src/nl/valuga/plugin/PointMobile/"/>
+</platform>
+
 </plugin>
