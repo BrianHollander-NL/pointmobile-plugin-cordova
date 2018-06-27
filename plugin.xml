@@ -8,8 +8,8 @@
     <license>MIT</license>
 
     <keywords>cordova,android,pointmobile</keywords>
-    <repo>https://github.com/timeseriesBH/pointmobile-plugin.git</repo>
-    <issue>https://github.com/timeseriesBH/pointmobile-plugin/issues</issue>
+    <repo>https://github.com/timeseriesBH/pointmobile-plugin-cordova.git</repo>
+    <issue>https://github.com/timeseriesBH/pointmobile-plugin-cordova/issues</issue>
 
     <engines>
         <engine name="cordova" version=">=3.0.0"/>
