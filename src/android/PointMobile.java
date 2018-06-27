@@ -49,7 +49,6 @@ public class PointMobile extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova,CordovaWebView webView){
         super.initialize(cordova,webView);
-        mDetectResult = new MsrResult();
     }
 
     /**
