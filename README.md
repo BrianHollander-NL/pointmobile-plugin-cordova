@@ -1,1 +1,1 @@
-# pm66-plugin
+# Point Mobile Plugin
