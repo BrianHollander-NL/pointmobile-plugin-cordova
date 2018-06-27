@@ -2,9 +2,9 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-plugin-pointmobileplugin" version="0.0.1">
-    <name>PM66 Plugin</name>
+    <name>Point Mobile Plugin</name>
 
-    <description>An Android Cordova plugin that implements features of the PM66 Android device.</description>
+    <description>An Android Cordova plugin that implements features of the PM Android device.</description>
     <license>MIT</license>
 
     <keywords>cordova,android,pointmobile</keywords>
@@ -24,7 +24,24 @@
                 <param name="android-package" value="nl.valuga.pointmobileplugin"/>
             </feature>
         </config-file>
-
-       <source-file src="src/android/PointMobilePlugin.java" target-dir="src/com/valugacordova/plugin" />
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <uses-permission android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"/>
+            <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+            <permission
+                android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
+                android:protectionLevel="normal" />
+        </config-file>gradle
+        <receiver
+            android:name="nl.valuga.pointmobileplugin$ScanResultReceiver"
+            android:enabled="true"
+            android:permission="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
+            android:priority="0" >
+            <intent-filter>
+                <action android:name="device.common.USERMSG" />
+            </intent-filter>
+        </receiver>
+        <uses-library android:name="device.sdk" android:required="true" />
+        <source-file src="src/android/device.sdk.jar" target-dir="libs" framework="true" />
+        <source-file src="src/android/PointMobile.java" target-dir="src/nl/valuga/plugin/PointMobile/"/>
     </platform>
 </plugin>

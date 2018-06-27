@@ -1,4 +1,4 @@
-package nl.valuga.plugin.pointmobile;
+package nl.valuga.pointmobileplugin;
 
 import org.apache.cordova.*;
 import org.apache.cordova.CallbackContext;
@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import device.sdk.ScanManager;
+
 import device.common.DecodeResult;
 import device.common.ScanConst;
 
