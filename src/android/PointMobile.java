@@ -1,4 +1,4 @@
-package nl.valuga.pointmobileplugin;
+package nl.valuga.plugin.pointmobile;
 
 import org.apache.cordova.*;
 import org.apache.cordova.CallbackContext;
