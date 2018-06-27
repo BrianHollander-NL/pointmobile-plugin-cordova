@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "An Android Cordova plugin that implements features of the Point Mobile Android device..",
   "cordova": {
-    "id": "plugin-pointmobile-cordova",
+    "id": "cordova-plugin-pointmobile",
     "platforms": [
       "android"
     ]

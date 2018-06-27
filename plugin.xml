@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="cordova-plugin-pointmobileplugin" version="0.0.1">
+    id="cordova-plugin-pointmobile" version="0.0.1">
     <name>Point Mobile Plugin</name>
 
     <description>An Android Cordova plugin that implements features of the PM Android device.</description>
@@ -16,7 +16,7 @@
     </engines>
 
     <js-module src="www/pointmobileplugin.js" name="pointmobileplugin">
-        <clobbers target="window.plugins.pointmobileplugin" />
+        <clobbers target="window.plugins.pointmobile" />
     </js-module>
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
