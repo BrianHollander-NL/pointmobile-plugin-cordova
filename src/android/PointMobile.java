@@ -494,6 +494,7 @@ public class PointMobile extends CordovaPlugin {
                 mTrack3 = mDetectResult.getMsrTrack3();
             }
         }
+    }
     /**
      * Pass event to method overload.
      *
