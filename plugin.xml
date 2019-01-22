@@ -15,7 +15,7 @@
 <dependency id="cordova-plugin-device" />
 
 <!-- js -->
-<js-module src="www/pointmobile.js" name="pm80">
+<js-module src="www/pointmobile.js" name="pointmobile">
     <clobbers target="cordova.plugins.PointMobile" />
 </js-module>
 
