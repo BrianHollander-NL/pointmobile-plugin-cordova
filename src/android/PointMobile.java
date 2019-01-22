@@ -16,9 +16,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import device.sdk.ScanManager;
+import device.common.MsrIndex;
+import device.common.MsrResult;
+import device.common.MsrResultCallback;
 import device.sdk.MsrManager;
-
+import device.sdk.ScanManager;
 import device.common.DecodeResult;
 import device.common.ScanConst;
 
