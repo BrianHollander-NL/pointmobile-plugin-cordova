@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-pointmobile",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "An Android Cordova plugin that implements features of the Point Mobile Android device..",
   "cordova": {
     "id": "cordova-plugin-pointmobile",
@@ -14,6 +14,7 @@
   },
   "keywords": [
     "PM66",
+    "PM80",
     "ecosystem:cordova",
     "cordova-android"
   ],

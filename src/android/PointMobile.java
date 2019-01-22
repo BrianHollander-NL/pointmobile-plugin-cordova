@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import device.sdk.ScanManager;
+import device.sdk.MsrManager;
 
 import device.common.DecodeResult;
 import device.common.ScanConst;
@@ -35,6 +36,10 @@ public class PointMobile extends CordovaPlugin {
     private int origScanResultType = 0;
 
     private String mResult = null;
+
+    private String mTrack1;
+    private String mTrack2;
+    private String mTrack3;
 
     private boolean readerActivated = false;
     private boolean scannerActivated = true;
@@ -62,6 +67,9 @@ public class PointMobile extends CordovaPlugin {
     public void onPause(boolean multitasking) {
         super.onPause(multitasking);
 
+        if (readerActivated) {
+            deactivateReader(null);
+        }
         if (scannerActivated) {
             deactivateScanner(null);
         }
@@ -78,6 +86,9 @@ public class PointMobile extends CordovaPlugin {
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
 
+        if (readerActivated) {
+            activateReader(null);
+        }
         if (scannerActivated) {
             activateScanner(null);
         }
@@ -101,7 +112,15 @@ public class PointMobile extends CordovaPlugin {
      */
     @Override
     public boolean execute(final String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
-        if("SCAN_activateScanner".equals(action)){
+        if("MSR_activateReader".equals(action)){
+            activateReader(callbackContext);
+        } else if("MSR_deactivateReader".equals(action)){
+            deactivateReader(callbackContext);
+        } else if("MSR_swipe".equals(action)){
+            swipe(callbackContext);
+        } else if("MSR_stopSwipe".equals(action)){
+            stopSwipe(callbackContext);
+        } else if("SCAN_activateScanner".equals(action)){
             activateScanner(callbackContext);
         } else if("SCAN_deactivateScanner".equals(action)){
             deactivateScanner(callbackContext);
@@ -112,6 +131,83 @@ public class PointMobile extends CordovaPlugin {
         return true;
     }
 
+    /**
+     * Starts listen to SDK events for connection, disconnection, swiping, etc.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void activateReader(final CallbackContext callbackContext){
+        String callbackContextMsg = null;
+
+        try{
+            mMsr = new MsrManager();
+            if(mMsr != null){
+                mMsr.DeviceMsrOpen(mCallback);
+            }
+            mTrack1 = new String();
+            mTrack2 = new String();
+            mTrack3 = new String();
+
+            if(callbackContext != null){
+                readerActivated = true;
+            } else {
+                fireEvent("reader_reactivated");
+            }
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
+            callbackContextMsg = "Failed to activate reader";
+        }
+        sendCallback(callbackContext,callbackContextMsg);
+    }
+
+    private void deactivateReader(final CallbackContext callbackContext){
+        try{
+            mMsr.DeviceMsrClose();
+            mMsr = null;
+            if(callbackContext != null){
+                readerActivated = false;
+            }
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
+        }
+
+        sendCallback(callbackContext,null);
+    }
+    /**
+     * Tells the SDK to begin expecting a swipe. From the moment this is
+     * called, the user will have 30 seconds to swipe the card before a
+     * timeout error occurs.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void swipe(final CallbackContext callbackContext) {
+        if(mMsr != null) {
+            if (mMsr.DeviceMsrStartRead() == 0) {
+                // If we get this far, we can expect events for card
+                // processing and card data received if a card is
+                // actually swiped, otherwise we can expect a timeout
+                // event.
+                callbackContext.success();
+            } else {
+                // Unexpected error
+                callbackContext.error("Failed to start swipe.");
+            }
+
+        } else callbackContext.error("Reader must be activated before starting swipe.");
+    }
+    /**
+     * Tells the SDK to stop expecting a swipe.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void stopSwipe(final CallbackContext callbackContext) {
+        if(mMsr != null) {
+            mMsr.DeviceMsrStopRead();
+        } else callbackContext.error("Reader must be activated before stopping swipe.");
+    }
     /**
      * @param callbackContext
      *        Used when calling back into JavaScript

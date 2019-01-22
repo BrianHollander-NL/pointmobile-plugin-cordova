@@ -1,6 +1,21 @@
 var exec = require('cordova/exec');
 
 var PointMobile = function() {};
+PointMobile.activate = function(success, error) {
+	exec(success, error, 'PointMobile', 'MSR_activateReader', []);
+};
+
+PointMobile.deactivate = function(success, error) {
+	exec(success, error, 'PointMobile', 'MSR_deactivateReader', []);
+};
+
+PointMobile.swipe = function (success, error) {
+	exec(success, error, 'PointMobile', 'MSR_swipe', []);
+};
+
+PointMobile.stopSwipe = function (success, error) {
+	exec(success, error, 'PointMobile', 'MSR_stopSwipe', []);
+};
 
 PointMobile.startScanner = function (success, error) {
 	exec(success, error, 'PointMobile', 'SCAN_activateScanner', []);
