@@ -493,11 +493,7 @@ public class PointMobile extends CordovaPlugin {
                 mTrack2 = mDetectResult.getMsrTrack2();
                 mTrack3 = mDetectResult.getMsrTrack3();
             }
-            if (mListener != null) {
-                mListener.setResult(mTrack1, mTrack2, mTrack3, mResult);
-            }
         }
-    }
     /**
      * Pass event to method overload.
      *
