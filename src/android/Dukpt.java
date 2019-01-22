@@ -1,4 +1,4 @@
-package device.sdk.sample.msr;
+package android;
 
 import java.security.Key;
 
