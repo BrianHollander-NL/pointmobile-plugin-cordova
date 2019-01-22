@@ -27,19 +27,20 @@
         </feature>
     </config-file>
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-        <uses-permission android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"/>
+        <uses-permission android:name="nl.valuga.plugin.pointmobile.permission.SCANNER_RESULT_RECEIVER"/>
         <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
         <permission
-            android:name="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
+            android:name="nl.valuga.plugin.pointmobile.permission.SCANNER_RESULT_RECEIVER"
             android:protectionLevel="normal" />
     </config-file>
     <receiver
         android:name="nl.valuga.plugin.pointmobile.PointMobile$ScanResultReceiver"
         android:enabled="true"
-        android:permission="device.sdk.sample.scanner.permission.SCANNER_RESULT_RECEIVER"
+        android:permission="nl.valuga.plugin.pointmobile.permission.SCANNER_RESULT_RECEIVER"
         android:priority="0" >
         <intent-filter>
             <action android:name="device.common.USERMSG" />
+            <action android:name="device.scanner.EVENT" />
         </intent-filter>
     </receiver>
 
