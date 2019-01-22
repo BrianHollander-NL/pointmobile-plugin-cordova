@@ -265,7 +265,35 @@ public class PointMobile extends CordovaPlugin {
     /***************************************************
      * SDK CALLBACKS
      ***************************************************/
+    MsrResultCallback mCallback = new MsrResultCallback() {
+        @Override
+        public void onResult(int cmd, int status) {
+            int track1result = (status >> 8) & 0x1;
+            int track2result = (status >> 8) & 0x2;
+            int track3result = (status >> 8) & 0x4;
+            boolean track1Success = track1result == 0;
+            boolean track2Success = track2result == 0;
+            boolean track3Success = track3result == 0;
 
+            int readstatus = status & 0xff;
+            if (readstatus == 0) {
+                GetResult();
+                String message;
+                if(!track1Success) mTrack1 = "";
+                if(!track2Success) mTrack2 = "";
+                if(!track3Success) mTrack3 = "";
+                message = "{\"Track1\":{\"Success\":" + track1Success + ",\"Content\":\"" + mTrack1 + "\"},"
+                        + "\"Track2\":{\"Success\":" + track2Success + ",\"Content\":\"" + mTrack2 + "\"},"
+                        + "\"Track3\":{\"Success\":" + track3Success + ",\"Content\":\"" + mTrack3 + "\"}}";
+                fireEvent("swipe_success", message);
+            } else {
+                fireEvent("swipe_failed",errormsg(status, readstatus));
+            }
+            mTrack1 = new String();
+            mTrack2 = new String();
+            mTrack3 = new String();
+        }
+    };
     private class ScanResultReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -303,38 +331,7 @@ public class PointMobile extends CordovaPlugin {
             } else callbackContext.error(msg);
         }
     }
-
-    /**
-     * Pass event to method overload.
-     *
-     * @param event
-     *        The event name
-     */
-    private void fireEvent(String event) {
-        fireEvent(event, null);
-    }
-
-    /**
-     * Format and send event to JavaScript side.
-     *
-     * @param event
-     *        The event name
-     * @param data
-     *        Details about the event
-     */
-    private void fireEvent(String event, String data) {
-        if(data != null) {
-            data = data.replaceAll("\\s","");
-        }
-        String dataArg = data != null ? "','" + data + "" : "";
-
-        String js = "cordova.plugins.PointMobile.fireEvent('" +
-                event + dataArg + "');";
-
-        webView.sendJavascript(js);
-    }
-}
- /***************************************************
+/***************************************************
      * UTILS
      ***************************************************/
 
@@ -426,3 +423,33 @@ public class PointMobile extends CordovaPlugin {
         }
         return status + " - " + msg;
     }
+    /**
+     * Pass event to method overload.
+     *
+     * @param event
+     *        The event name
+     */
+    private void fireEvent(String event) {
+        fireEvent(event, null);
+    }
+
+    /**
+     * Format and send event to JavaScript side.
+     *
+     * @param event
+     *        The event name
+     * @param data
+     *        Details about the event
+     */
+    private void fireEvent(String event, String data) {
+        if(data != null) {
+            data = data.replaceAll("\\s","");
+        }
+        String dataArg = data != null ? "','" + data + "" : "";
+
+        String js = "cordova.plugins.PointMobile.fireEvent('" +
+                event + dataArg + "');";
+
+        webView.sendJavascript(js);
+    }
+}
