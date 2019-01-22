@@ -47,6 +47,7 @@
     <uses-library android:name="device.sdk" android:required="true" />
     <source-file src="src/android/device.sdk.jar" target-dir="libs" framework="true" />
     <source-file src="src/android/PointMobile.java" target-dir="src/nl/valuga/plugin/PointMobile/"/>
+    <source-file src="src/android/Dukpt.java" target-dir="src/nl/valuga/plugin/PointMobile/"/>
 </platform>
 
 </plugin>

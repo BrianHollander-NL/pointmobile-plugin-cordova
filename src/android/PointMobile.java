@@ -16,6 +16,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import android.Dukpt;
+
 import device.common.MsrIndex;
 import device.common.MsrResult;
 import device.common.MsrResultCallback;
@@ -424,6 +428,73 @@ public class PointMobile extends CordovaPlugin {
             }
         }
         return status + " - " + msg;
+    }
+
+    public byte[] getEncryptionData() {
+        return mMsr.getEncryptionData();
+    }
+    private byte[] getDukptKey() {
+        byte[] data = getEncryptionData();
+        byte[] initialKey = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10};
+        byte[] ksn = new byte[10];
+        for (int i = 0; i < 10; i++) {
+            ksn[i] = data[5 + i];
+        }
+        long tc = ((ksn[7] & 0x1f) << 16) | (ksn[8] & 0xff) <<8 | ksn[9] & 0xff;
+        return Dukpt.getKey(initialKey, ksn, tc);
+    }
+
+    private byte[] getDataFromEncryptionData() {
+        byte[] data = getEncryptionData();
+        int padLength = data[2] & 0xFF;
+        int dataLength = (((data[3] & 0xFF) << 8) | (data[4] & 0xFF)) + padLength - 10;
+        byte[] encryptedData = new byte[dataLength];
+        System.arraycopy(data, 15, encryptedData, 0, dataLength);
+        return encryptedData;
+    }
+    public byte[] getDecryptionData() {
+        byte[] decoded = null;
+        Cipher cipher = null;
+        try {
+            cipher = Cipher.getInstance("AES/CBC/NoPadding");
+            Key keySpec = new SecretKeySpec(getDukptKey(), "AES");
+            cipher.init(Cipher.DECRYPT_MODE, keySpec);
+            decoded = cipher.doFinal(getDataFromEncryptionData());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return decoded;
+    }
+    public void GetResult() {
+        if (mMsr != null) {
+            byte[] encryptionData = getEncryptionData();
+            if (encryptionData != null) {
+                String s = "";
+                for (byte b : encryptionData) {
+                    s += String.format("%02X", b);
+                }
+                // Encrypted data.
+                mTrack1 = s;
+
+                byte[] decryptionData = getDecryptionData();
+                s = "";
+                if (decryptionData != null) {
+                    for (byte b : decryptionData) {
+                        s += String.format("%02X", b);
+                    }
+                }
+                // Decrypted data.
+                mTrack2 = s;
+            } else {
+                mDetectResult = mMsr.DeviceMsrGetData(0x07);
+                mTrack1 = mDetectResult.getMsrTrack1();
+                mTrack2 = mDetectResult.getMsrTrack2();
+                mTrack3 = mDetectResult.getMsrTrack3();
+            }
+            if (mListener != null) {
+                mListener.setResult(mTrack1, mTrack2, mTrack3, mResult);
+            }
+        }
     }
     /**
      * Pass event to method overload.
