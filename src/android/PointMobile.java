@@ -30,6 +30,8 @@ public class PointMobile extends CordovaPlugin {
     public static final int READ_FAIL=1;
     public static final int READ_READY=2;
 
+    private static MsrManager mMsr = null;
+    private MsrResult mDetectResult = null;
     private static ScanManager mScan = null;
     private static DecodeResult mDecodeResult;
     private final ScanResultReceiver scanResultReceiver = new ScanResultReceiver();
@@ -332,3 +334,95 @@ public class PointMobile extends CordovaPlugin {
         webView.sendJavascript(js);
     }
 }
+ /***************************************************
+     * UTILS
+     ***************************************************/
+
+    String errormsg(int track, int status)
+    {
+        String msg = new String();
+        if (status == MsrIndex.MMD1000_READ_OK) {
+            msg = "Success";
+            if ((track&0x600) == 0x600) {
+                msg += " part(Track2,3 fail)";
+            } else if ((track&0x500) == 0x500) {
+                msg += " part(Track1,3 fail)";
+            } else if ((track&0x300) == 0x300) {
+                msg += " part(Track1,2 fail)";
+            } else if ((track&0x100) == 0x100) {
+                msg += " part(track1 fail)";
+            } else if ((track&0x200) == 0x200) {
+                msg += " part(track2 fail)";
+            } else if ((track&0x400) == 0x400) {
+                msg += " part(track3 fail)";
+            }
+            else {
+                msg += " all";
+            }
+        }
+        else {
+            switch(status) {
+                case MsrIndex.MMD1000_READ_ERROR:
+                    msg = "Read failed";
+                    break;
+                case MsrIndex.MMD1000_READ_STOP:
+                    msg = "Read stop";
+                    break;
+                case MsrIndex.MMD1000_CRC_ERROR:
+                    msg = "CRC error in encryption related information stored in OTP";
+                    break;
+                case MsrIndex.MMD1000_NOINFOSTORE:
+                    msg = "No information stored in OTP related to encryption";
+                    break;
+                case MsrIndex.MMD1000_AES_INIT_NOT_SET:
+                    msg = "AES initial vector is not set yet";
+                    break;
+                case MsrIndex.MMD1000_READ_PREAMBLE_ERROR:
+                    msg = "Preamble error in card read data";
+                    break;
+                case MsrIndex.MMD1000_READ_POSTAMBLE_ERROR:
+                    msg = "Postamble error in card read data";
+                    break;
+                case MsrIndex.MMD1000_READ_LRC_ERROR:
+                    msg = "LRC error in card read data";
+                    break;
+                case MsrIndex.MMD1000_READ_PARITY_ERROR:
+                    msg = "Parity error in card read data";
+                    break;
+                case MsrIndex.MMD1000_BLANK_TRACK:
+                    msg = "Black track";
+                    break;
+                case MsrIndex.MMD1000_CMD_STXETX_ERROR:
+                    msg = "STX/ETX error in command communication";
+                    break;
+                case MsrIndex.MMD1000_CMD_UNRECOGNIZABLE:
+                    msg = "Class/Function un-recognizable in command";
+                    break;
+                case MsrIndex.MMD1000_CMD_BCC_ERROR:
+                    msg = "BCC error in command communication";
+                    break;
+                case MsrIndex.MMD1000_CMD_LENGTH_ERROR:
+                    msg = "Length error in command communication";
+                    break;
+                case MsrIndex.MMD1000_READ_NO_DATA:
+                    msg = "No data available to re-read";
+                    break;
+                case MsrIndex.MMD1000_DEVICE_READ_TIMEOUT:
+                    msg = "Read command timeout";
+                    break;
+                case MsrIndex.MMD1000_DEVICE_POWER_DISABLE:
+                    msg = "MMD1000 power is disable";
+                    break;
+                case MsrIndex.MMD1000_DEVICE_NOT_OPENED:
+                    msg = "MMD1000 function is not opened";
+                    break;
+                case MsrIndex.MMD1000_DEVICE_DATA_CLEARED:
+                    msg = "MMD1000 device result is cleared";
+                    break;
+                default:
+                    msg = "Error: " + status;
+                    break;
+            }
+        }
+        return status + " - " + msg;
+    }
