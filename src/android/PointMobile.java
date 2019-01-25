@@ -272,10 +272,10 @@ public class PointMobile extends CordovaPlugin {
         sendCallback(callbackContext,null);
     }
     private void getDeviceInformation(final CallbackContext callbackContext){
+
         try{
             mInformation = new Information();
             String message;
-
             message = "{";
             message += "\"hardwareRevision\": \"" + mInformation.getHardwareRevision() + "\"";
             message += ",\"androidVersion\": \"" + mInformation.getAndroidVersion() + "\"";
@@ -288,12 +288,13 @@ public class PointMobile extends CordovaPlugin {
             message += ",\"partNumber\": \"" + mInformation.getPartNumber() + "\"";
             message += ",\"manufacturerDate\": \"" + mInformation.getManufactureDate() + "\"";
             message += "}";
+            callbackContext.success(message);
 
-        } catch(IllegalArgumentException e){
-            e.printStackTrace();
+        } catch(){
+            sendCallback(CallbackContext callbackContext, 'Not possible to get device information')
         }
 
-        callbackContext.success(message);
+
     }
     /***************************************************
      * SDK CALLBACKS
