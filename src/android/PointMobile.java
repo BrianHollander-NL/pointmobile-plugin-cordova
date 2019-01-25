@@ -290,7 +290,7 @@ public class PointMobile extends CordovaPlugin {
             message += "}";
             callbackContext.success(message);
 
-        } catch(){
+        } catch(Exception e){
             sendCallback(CallbackContext callbackContext, 'Not possible to get device information')
         }
 
