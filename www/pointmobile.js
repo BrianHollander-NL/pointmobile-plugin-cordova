@@ -1,7 +1,7 @@
 var exec = require('cordova/exec');
 
 var PointMobile = function() {};
-PointMobile.activate = function(success, error) {
+PointMobile.getDeviceInformation = function(success, error) {
 	exec(success, error, 'PointMobile', 'getDeviceInformation', []);
 };
 PointMobile.activate = function(success, error) {
