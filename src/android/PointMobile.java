@@ -293,7 +293,7 @@ public class PointMobile extends CordovaPlugin {
             e.printStackTrace();
         }
 
-        sendCallback(callbackContext,message);
+        callbackContext.success(message);
     }
     /***************************************************
      * SDK CALLBACKS
