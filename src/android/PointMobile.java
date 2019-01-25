@@ -287,6 +287,7 @@ public class PointMobile extends CordovaPlugin {
             message += ",\"serialNumber\": \"" + mInformation.getSerialNumber() + "\"";
             message += ",\"partNumber\": \"" + mInformation.getPartNumber() + "\"";
             message += ",\"manufacturerDate\": \"" + mInformation.getManufactureDate() + "\"";
+            message += ",\"sdkVersion\": \"" + mInformation.getSDKVersion() () + "\"";
             message += "}";
             callbackContext.success(message);
 
