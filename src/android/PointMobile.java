@@ -29,6 +29,7 @@ import device.sdk.MsrManager;
 import device.sdk.ScanManager;
 import device.common.DecodeResult;
 import device.common.ScanConst;
+import device.sdk.Information;
 
 public class PointMobile extends CordovaPlugin {
     // Reference to application context for construction and resource purposes
@@ -38,6 +39,7 @@ public class PointMobile extends CordovaPlugin {
     public static final int READ_FAIL=1;
     public static final int READ_READY=2;
 
+    private Information mInformation;
     private static MsrManager mMsr = null;
     private MsrResult mDetectResult = null;
     private static ScanManager mScan = null;
@@ -134,6 +136,8 @@ public class PointMobile extends CordovaPlugin {
             activateScanner(callbackContext);
         } else if("SCAN_deactivateScanner".equals(action)){
             deactivateScanner(callbackContext);
+        } else if("GetSDKVersion".equals(action)){
+            getSDKVersion(callbackContext);
         } else {
             // Method not found.
             return false;
@@ -170,19 +174,40 @@ public class PointMobile extends CordovaPlugin {
         }
         sendCallback(callbackContext,callbackContextMsg);
     }
-
     private void deactivateReader(final CallbackContext callbackContext){
         try{
-            mMsr.DeviceMsrClose();
-            mMsr = null;
-            if(callbackContext != null){
-                readerActivated = false;
-            }
+
         } catch(IllegalArgumentException e){
             e.printStackTrace();
         }
 
         sendCallback(callbackContext,null);
+    }
+
+    private void getDeviceInformation(final CallbackContext callbackContext){
+        try{
+            mInformation = new Information();
+            String message;
+
+            message = "{";
+            message += "\"hardwareRevision\": \"" + mInformation.getHardwareRevision() + "\"";
+            message += ",\"androidVersion\": \"" + mInformation.getAndroidVersion() + "\"";
+            message += ",\"kernelVersion\": \"" + mInformation.getKernelVersion() + "\"";
+            message += ",\"buildNumber\": \"" + mInformation.getBuildNumber() + "\"";
+            message += ",\"manufacturer\": \"" + mInformation.getManufacturer() + "\"";
+            message += ",\"modelName\": \"" + mInformation.getModelName() + "\"";
+            message += ",\"processorInfo\": \"" + mInformation.getProcessorInfo() + "\"";
+            message += ",\"serialNumber\": \"" + mInformation.getSerialNumber() + "\"";
+            message += ",\"partNumber\": \"" + mInformation.getPartNumber() + "\"";
+            message += ",\"manufacturerDate\": \"" + mInformation.getManufactureDate() + "\"";
+            message += "}";
+
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
+        }
+
+        sendCallback(callbackContext,msg:null);
+        fireEvent("device_information", message);
     }
     /**
      * Tells the SDK to begin expecting a swipe. From the moment this is
