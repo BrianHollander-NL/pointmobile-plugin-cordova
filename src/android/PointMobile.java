@@ -136,8 +136,8 @@ public class PointMobile extends CordovaPlugin {
             activateScanner(callbackContext);
         } else if("SCAN_deactivateScanner".equals(action)){
             deactivateScanner(callbackContext);
-        } else if("GetSDKVersion".equals(action)){
-            getSDKVersion(callbackContext);
+        } else if("getDeviceInformation".equals(action)){
+            getDeviceInformation(callbackContext);
         } else {
             // Method not found.
             return false;
