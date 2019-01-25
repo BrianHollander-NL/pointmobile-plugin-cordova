@@ -184,31 +184,7 @@ public class PointMobile extends CordovaPlugin {
         sendCallback(callbackContext,null);
     }
 
-    private void getDeviceInformation(final CallbackContext callbackContext){
-        try{
-            mInformation = new Information();
-            String message;
 
-            message = "{";
-            message += "\"hardwareRevision\": \"" + mInformation.getHardwareRevision() + "\"";
-            message += ",\"androidVersion\": \"" + mInformation.getAndroidVersion() + "\"";
-            message += ",\"kernelVersion\": \"" + mInformation.getKernelVersion() + "\"";
-            message += ",\"buildNumber\": \"" + mInformation.getBuildNumber() + "\"";
-            message += ",\"manufacturer\": \"" + mInformation.getManufacturer() + "\"";
-            message += ",\"modelName\": \"" + mInformation.getModelName() + "\"";
-            message += ",\"processorInfo\": \"" + mInformation.getProcessorInfo() + "\"";
-            message += ",\"serialNumber\": \"" + mInformation.getSerialNumber() + "\"";
-            message += ",\"partNumber\": \"" + mInformation.getPartNumber() + "\"";
-            message += ",\"manufacturerDate\": \"" + mInformation.getManufactureDate() + "\"";
-            message += "}";
-
-        } catch(IllegalArgumentException e){
-            e.printStackTrace();
-        }
-
-        sendCallback(callbackContext,msg:null);
-        fireEvent("device_information", message);
-    }
     /**
      * Tells the SDK to begin expecting a swipe. From the moment this is
      * called, the user will have 30 seconds to swipe the card before a
@@ -294,6 +270,30 @@ public class PointMobile extends CordovaPlugin {
         }
 
         sendCallback(callbackContext,null);
+    }
+    private void getDeviceInformation(final CallbackContext callbackContext){
+        try{
+            mInformation = new Information();
+            String message;
+
+            message = "{";
+            message += "\"hardwareRevision\": \"" + mInformation.getHardwareRevision() + "\"";
+            message += ",\"androidVersion\": \"" + mInformation.getAndroidVersion() + "\"";
+            message += ",\"kernelVersion\": \"" + mInformation.getKernelVersion() + "\"";
+            message += ",\"buildNumber\": \"" + mInformation.getBuildNumber() + "\"";
+            message += ",\"manufacturer\": \"" + mInformation.getManufacturer() + "\"";
+            message += ",\"modelName\": \"" + mInformation.getModelName() + "\"";
+            message += ",\"processorInfo\": \"" + mInformation.getProcessorInfo() + "\"";
+            message += ",\"serialNumber\": \"" + mInformation.getSerialNumber() + "\"";
+            message += ",\"partNumber\": \"" + mInformation.getPartNumber() + "\"";
+            message += ",\"manufacturerDate\": \"" + mInformation.getManufactureDate() + "\"";
+            message += "}";
+
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
+        }
+
+        sendCallback(callbackContext,message);
     }
     /***************************************************
      * SDK CALLBACKS
