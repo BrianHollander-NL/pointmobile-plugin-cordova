@@ -45,7 +45,6 @@ public class PointMobile extends CordovaPlugin {
     private static ScanManager mScan = null;
     private static DecodeResult mDecodeResult;
     private final ScanResultReceiver scanResultReceiver = new ScanResultReceiver();
-    private int origScanResultType = 0;
 
     private String mResult = null;
 
@@ -76,6 +75,16 @@ public class PointMobile extends CordovaPlugin {
      *      Flag indicating if multitasking is turned on for app
      */
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (readerActivated) {
+            deactivateReader(null);
+        }
+        if (scannerActivated) {
+            deactivateScanner(null);
+        }
+    }
     public void onPause(boolean multitasking) {
         super.onPause(multitasking);
 
@@ -176,7 +185,7 @@ public class PointMobile extends CordovaPlugin {
     }
     private void deactivateReader(final CallbackContext callbackContext){
         try{
-
+            mMsr.DeviceMsrClose();
         } catch(IllegalArgumentException e){
             e.printStackTrace();
         }
@@ -232,7 +241,6 @@ public class PointMobile extends CordovaPlugin {
             mDecodeResult = new DecodeResult();
             if(mScan != null){
                 mScan.aDecodeAPIInit();
-                origScanResultType = mScan.aDecodeGetResultType();
                 mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_USERMSG);
                 IntentFilter intentFilter = new IntentFilter(ScanConst.INTENT_USERMSG);
                 try {
@@ -259,7 +267,7 @@ public class PointMobile extends CordovaPlugin {
     private void deactivateScanner(final CallbackContext callbackContext){
         try{
             context.unregisterReceiver(scanResultReceiver);
-            mScan.aDecodeSetResultType(origScanResultType);
+            mScan.aDecodeSetResultType(ScanConst.ResultType.DCD_RESULT_KBDMSG);
             mScan.aDecodeAPIDeinit();
             mScan = null;
             if(callbackContext != null){
@@ -293,7 +301,6 @@ public class PointMobile extends CordovaPlugin {
         } catch(Exception e){
             callbackContext.error("Not possible to get device information");
         }
-
 
     }
     /***************************************************
