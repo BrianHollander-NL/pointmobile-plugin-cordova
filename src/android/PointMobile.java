@@ -55,9 +55,9 @@ public class PointMobile extends CordovaPlugin {
     private boolean readerActivated = false;
     private boolean scannerActivated = true;
 
-    /***************************************************
-     * LIFECYCLE
-     ***************************************************/
+    /*
+     LIFECYCLE
+     */
 
     /**
      * Called after plugin construction and fields have been initialized.
@@ -115,9 +115,9 @@ public class PointMobile extends CordovaPlugin {
         }
     }
 
-    /***************************************************
-     * JAVASCRIPT INTERFACE IMPLEMENTATION
-     ***************************************************/
+    /*
+      JAVASCRIPT INTERFACE IMPLEMENTATION
+     */
 
     /**
      * Executes the request sent from JavaScript.
@@ -165,9 +165,9 @@ public class PointMobile extends CordovaPlugin {
 
         try{
             mMsr = new MsrManager();
-            if(mMsr != null){
-                mMsr.DeviceMsrOpen(mCallback);
-            }
+
+            mMsr.DeviceMsrOpen(mCallback);
+
             mTrack1 = new String();
             mTrack2 = new String();
             mTrack3 = new String();
@@ -306,7 +306,7 @@ public class PointMobile extends CordovaPlugin {
     /***************************************************
      * SDK CALLBACKS
      ***************************************************/
-    MsrResultCallback mCallback = new MsrResultCallback() {
+    private MsrResultCallback mCallback = new MsrResultCallback() {
         @Override
         public void onResult(int cmd, int status) {
             int track1result = (status >> 8) & 0x1;
@@ -376,9 +376,9 @@ public class PointMobile extends CordovaPlugin {
      * UTILS
      ***************************************************/
 
-    String errormsg(int track, int status)
+private String errormsg(int track, int status)
     {
-        String msg = new String();
+        String msg;
         if (status == MsrIndex.MMD1000_READ_OK) {
             msg = "Success";
             if ((track&0x600) == 0x600) {
@@ -465,7 +465,7 @@ public class PointMobile extends CordovaPlugin {
         return status + " - " + msg;
     }
 
-    public byte[] getEncryptionData() {
+    private byte[] getEncryptionData() {
         return mMsr.getEncryptionData();
     }
     private byte[] getDukptKey() {
@@ -487,9 +487,9 @@ public class PointMobile extends CordovaPlugin {
         System.arraycopy(data, 15, encryptedData, 0, dataLength);
         return encryptedData;
     }
-    public byte[] getDecryptionData() {
+    private byte[] getDecryptionData() {
         byte[] decoded = null;
-        Cipher cipher = null;
+        Cipher cipher;
         try {
             cipher = Cipher.getInstance("AES/CBC/NoPadding");
             Key keySpec = new SecretKeySpec(getDukptKey(), "AES");
@@ -500,7 +500,7 @@ public class PointMobile extends CordovaPlugin {
         }
         return decoded;
     }
-    public void GetResult() {
+    private void GetResult() {
         if (mMsr != null) {
             byte[] encryptionData = getEncryptionData();
             if (encryptionData != null) {
